@@ -98,6 +98,32 @@ public class Polinomio {
         lbl.setText("<html>" + lineas[0] + "<br>" + lineas[1] + "</html>");
     }
 
+    public Nodo getMayorExponente() {
+        if (cabeza != null) {
+            Nodo apuntador = cabeza;
+            while (apuntador.siguiente != null) {
+                apuntador = apuntador.siguiente;
+            }
+            return apuntador;
+        }
+        return null;
+    }
+
+    public Polinomio getDerivada() {
+        Polinomio d = new Polinomio();
+
+        Nodo apuntador = cabeza;
+        while (apuntador != null) {
+            if (apuntador.exponente != 0) {
+                Nodo n = new Nodo(apuntador.coeficiente * apuntador.exponente, apuntador.exponente - 1);
+                d.agregar(n);
+            }
+            apuntador = apuntador.siguiente;
+        }
+
+        return d;
+    }
+
     //*****************Métodos estáticos
     public static Polinomio sumar(Polinomio p1, Polinomio p2) {
         Polinomio pR = new Polinomio();
@@ -106,10 +132,12 @@ public class Polinomio {
         Nodo apuntador2 = p2.getCabeza();
 
         while (apuntador1 != null || apuntador2 != null) {
-            Nodo n;
+            Nodo n = null;
             if (apuntador1 != null && apuntador2 != null
                     && apuntador1.exponente == apuntador2.exponente) {
-                n = new Nodo(apuntador1.coeficiente + apuntador2.coeficiente, apuntador1.exponente);
+                if (apuntador1.coeficiente + apuntador2.coeficiente != 0) {
+                    n = new Nodo(apuntador1.coeficiente + apuntador2.coeficiente, apuntador1.exponente);
+                }
                 apuntador1 = apuntador1.siguiente;
                 apuntador2 = apuntador2.siguiente;
             } else if ((apuntador2 == null) || (apuntador1 != null && apuntador1.exponente < apuntador2.exponente)) {
@@ -119,24 +147,27 @@ public class Polinomio {
                 n = new Nodo(apuntador2.coeficiente, apuntador2.exponente);
                 apuntador2 = apuntador2.siguiente;
             }
-
-            pR.agregar(n);
+            if (n != null) {
+                pR.agregar(n);
+            }
         }
 
         return pR;
     }
-    
-        public static Polinomio restar(Polinomio p1, Polinomio p2) {
+
+    public static Polinomio restar(Polinomio p1, Polinomio p2) {
         Polinomio pR = new Polinomio();
 
         Nodo apuntador1 = p1.getCabeza();
         Nodo apuntador2 = p2.getCabeza();
 
         while (apuntador1 != null || apuntador2 != null) {
-            Nodo n;
+            Nodo n = null;
             if (apuntador1 != null && apuntador2 != null
                     && apuntador1.exponente == apuntador2.exponente) {
-                n = new Nodo(apuntador1.coeficiente - apuntador2.coeficiente, apuntador1.exponente);
+                if (apuntador1.coeficiente - apuntador2.coeficiente != 0) {
+                    n = new Nodo(apuntador1.coeficiente - apuntador2.coeficiente, apuntador1.exponente);
+                }
                 apuntador1 = apuntador1.siguiente;
                 apuntador2 = apuntador2.siguiente;
             } else if ((apuntador2 == null) || (apuntador1 != null && apuntador1.exponente < apuntador2.exponente)) {
@@ -146,10 +177,40 @@ public class Polinomio {
                 n = new Nodo(-apuntador2.coeficiente, apuntador2.exponente);
                 apuntador2 = apuntador2.siguiente;
             }
-
-            pR.agregar(n);
+            if (n != null) {
+                pR.agregar(n);
+            }
         }
 
+        return pR;
+    }
+
+    public static Polinomio multiplicar(Polinomio p1, Polinomio p2) {
+        Polinomio pR = new Polinomio();
+
+        Nodo apuntador1 = p1.getCabeza();
+        Nodo apuntador2 = p2.getCabeza();
+
+        while (apuntador1 != null) {
+            while (apuntador2 != null) {
+                Nodo n = new Nodo(apuntador1.coeficiente * apuntador2.coeficiente, apuntador1.exponente + apuntador2.exponente);
+                pR.agregar(n);
+                apuntador2 = apuntador2.siguiente;
+            }
+            apuntador1 = apuntador1.siguiente;
+            apuntador2 = p2.getCabeza();
+        }
+
+        return pR;
+    }
+
+    private static boolean esDivisible(Nodo n1, Nodo n2) {
+        return n1.exponente >= n2.exponente && n1.coeficiente % n2.coeficiente == 0;
+    }
+
+    public static Polinomio[] dividir(Polinomio p1, Polinomio p2) {
+
+        Polinomio[] pR = new Polinomio[2];
         return pR;
     }
 
