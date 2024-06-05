@@ -222,6 +222,14 @@ public class FrmPolinomios extends javax.swing.JFrame {
                 p = cmbPolinomio.getSelectedIndex() == 0 ? p1.getDerivada() : p2.getDerivada();
                 p.mostrar(lblResiduo);
                 break;
+            case 2:
+                p = Polinomio.multiplicar(p1, p2);
+                p.mostrar(lblPolinomioR);
+                break;
+            case 4:
+                p = cmbPolinomio.getSelectedIndex() == 0 ? p1.getDerivada() : p2.getDerivada();
+                p.mostrar(lblPolinomioR);
+                break;
         }
     }//GEN-LAST:event_btnCalcularActionPerformed
 
